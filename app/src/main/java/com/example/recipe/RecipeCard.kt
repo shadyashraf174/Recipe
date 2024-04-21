@@ -2,11 +2,10 @@ package com.example.recipe
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,80 +16,81 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.recipe.ui.theme.RecipeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardRecipe() {
+fun RecipeCard(navHostController: NavHostController) {
+    Spacer(modifier = Modifier.padding(24.dp))
+
     Card(
         modifier = Modifier
-            .width(500.dp)
-            .height(160.dp)
+            .height(112.dp)
             .padding(start = 16.dp),
-        colors = CardDefaults.cardColors(Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = RoundedCornerShape(0),
-        onClick = { /*TODO*/ }
+        onClick = {navHostController.navigate("S_2")}
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceAround
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    modifier = Modifier
-                        .padding(top = 10.dp, bottom = 6.dp),
-                    fontSize = 24.sp,
+                    text = "Meat Loaf",
+                    maxLines = 2,
+                    overflow = TextOverflow.Clip,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    text = "Meat Loaf"
                 )
+
                 Text(
-                    modifier = Modifier
-                        .padding(bottom = 33.dp),
+                    text = "Yummy home made meat loaf, great for left lovers.",
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(bottom = 4.dp),
                     fontSize = 13.sp,
+                    lineHeight = 18.sp,
                     color = Color.Gray,
-                    text = "Yummy home made meat loaf,\n great for left lovers."
                 )
-                Text(
-                    modifier = Modifier
-                        .padding(bottom = 1.dp),
-                    text = "01.05.2018"
-                )
+
+                Spacer(Modifier.weight(1f))
+
+                Text(text = "01.05.2018")
             }
+
             Spacer(Modifier.width(16.dp))
-            Box(
+
+            Image(
+                painter = painterResource(id = R.drawable.meat_loaf_web),
+                contentDescription = null,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(bottomStart = 30.dp, topStart = 30.dp))
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.meat_loaf),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                )
-            }
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(bottomStart = 10.dp, topStart = 10.dp)),
+                contentScale = ContentScale.Crop,
+            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CardRecipePreview() {
+fun RecipeCardPreview() {
+    val navController = rememberNavController()
     RecipeTheme {
-        CardRecipe()
+        RecipeCard(navController)
     }
 }
 
